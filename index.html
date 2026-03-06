@@ -2,31 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Secure Descriptive Exam</title>
+<title>Secure Online Quiz</title>
 
 <link rel="icon" type="image/png" href="image.png">
 <script src="https://cdn.tailwindcss.com"></script>
 
-<style>
-@keyframes scrollRightToLeft {
-  0%   { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
-}
-
-.scrolling-question {
-  white-space: nowrap;
-  animation: scrollRightToLeft 10s linear 2 forwards;
-}
-</style>
+<!-- EmailJS -->
 <script type="text/javascript"
   src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <script type="text/javascript">
   emailjs.init('AQrOoA9vgEUwlbyma'); // ✅ your public key
 </script>
+
+<style>
+@keyframes scrollRightToLeft {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+.scrolling-question {
+  white-space: nowrap;
+  animation: scrollRightToLeft 10s linear 2 forwards;
+}
+</style>
 </head>
 
-<body class="bg-slate-100 h-screen overflow-hidden flex items-center justify-center">
+<body class="bg-slate-100 h-screen flex items-center justify-center overflow-hidden">
 
 <div class="bg-white shadow-2xl rounded-xl w-full max-w-xl p-6 max-h-[90vh] overflow-hidden">
 
@@ -36,23 +37,13 @@
     <img src="THECOS_Google_Form_Header.png" class="max-h-24 object-contain">
   </div>
 
-  <h1 class="text-2xl font-bold text-center mb-4">Online Exam</h1>
+  <h1 class="text-2xl font-bold text-center mb-4">Online Quiz</h1>
 
-  <input id="studentName" class="w-full border p-2 mb-3 rounded"
-         placeholder="Enter Full Name">
+  <input id="studentName" class="w-full border p-2 mb-3 rounded" placeholder="Enter Full Name">
+  <input id="studentEmail" type="email" class="w-full border p-2 mb-4 rounded" placeholder="Enter Email Address">
 
-  <input id="studentEmail" type="email"
-         class="w-full border p-2 mb-3 rounded"
-         placeholder="Enter Email Address">
-
-  <select id="studentRole" class="w-full border p-2 mb-4 rounded">
-    <option value="">Select Role</option>
-     <option value="agm">AGM</option>
-  </select>
-
-  <button onclick="startExam()"
-          class="w-full bg-blue-600 text-white py-2 rounded">
-    Start Exam
+  <button id="startBtn" class="w-full bg-blue-600 text-white py-2 rounded">
+    Start Quiz
   </button>
 </div>
 
@@ -61,484 +52,835 @@
 
   <div class="flex justify-between mb-3">
     <span id="timer" class="text-red-600 font-bold"></span>
-    <span class="text-sm text-gray-500">
-      Copy / Paste / Tab switch disabled
-    </span>
+    <span class="text-sm text-gray-500">Tab switching disabled</span>
   </div>
 
-  <div class="flex-1 overflow-y-auto pr-2">
-    <div class="overflow-hidden mb-3">
+  <div class="flex-1 overflow-y-auto">
+    <div class="overflow-hidden mb-4">
       <h2 id="question" class="font-semibold text-lg"></h2>
     </div>
-
-    <textarea id="answer"
-      class="w-full border p-3 h-60 resize-none"
-      placeholder="Type your answer here..."
-      onpaste="return false"
-      oncopy="return false"
-      oncut="return false"></textarea>
+    <div id="options" class="space-y-2"></div>
   </div>
 
-  <div class="pt-3 border-t">
-    <button onclick="nextQuestion()"
-            class="bg-green-600 text-white px-5 py-2 rounded">
+  <div class="pt-4 border-t">
+    <button id="nextBtn" class="bg-green-600 text-white px-5 py-2 rounded w-full">
       Next
     </button>
   </div>
-
 </div>
+
+<!-- THANK YOU -->
+<div id="thankyou" class="hidden text-center">
+  <h1 class="text-2xl font-bold text-green-600 mb-4">✅ Thank You</h1>
+  <p class="text-gray-700 mb-2">Your exam has been submitted successfully.</p>
+  <p class="text-gray-500">You may now close this page.</p>
+</div>
+
 </div>
 
 <script>
-/* ================= QUESTION BANKS ================= */
+document.addEventListener("DOMContentLoaded", () => {
 
-const QUESTIONS_ASSISTANT_SECRETARY = [
-  "What is a Co-operative Society? Explain its main objectives.",
-  "Write the principles of Co-operation.",
-  "What is a Credit Co-operative Society? Explain its functions.",
-  "Explain the organizational structure of a Co-operative Society.",
-  "Write the difference between a Company and a Co-operative Society.",
-  "Explain the importance of audit in Co-operative Societies.",
-  "What is the role of the General Body in a Co-operative Society?",
-  "Write the sources of funds of a Co-operative Society.",
-  "What are the advantages of a Co-operative Credit Society compared to a bank?",
-  "How do financial statements help in monitoring credit risk?",
-  "Explain the role of communication in improving customer relations.",
-  "How does employee attitude affect organizational performance? How can it be improved?",
-  "Misunderstanding among staff leads to delays in services of a financial institution. How can it be overcome?",
-  "A Co-operative Society faces liquidity problems due to poor planning of deposits and loans. How can effective planning help?",
-  "An organisation suffers losses due to untrained staff handling accounts. How can effective staffing prevent this?",
-  "Employees are demotivated due to weak leadership. How can effective leadership improve performance?",
-  "Customers complain about lack of information regarding loan schemes. How can communication solve this?",
-  "Managing Committee faces difficulty in approving loans due to conflicting opinions. How can scientific decision-making help?",
-  "Delays in loan processing cause dissatisfaction. How can time management improve service delivery?",
-  "A Co-operative Society is losing members to commercial banks. How can marketing help regain members?",
-  "Uniform loan schemes result in poor utilisation. How can market segmentation improve effectiveness?",
-  "Deposit schemes are unattractive. How can service planning improve deposit mobilisation?",
-  "High interest rates reduce borrowings. How can proper pricing improve loan demand?",
-  "Customers from remote areas face access difficulties. How can service delivery improve marketing?",
-  "Customer loyalty is declining. How can relationship marketing strengthen loyalty?",
-  "Private banks attract youth with digital services. How can a Credit Co-operative attract young members?",
-  "Institution has surplus funds but low loan demand. Suggest a marketing strategy.",
-  "Low staff morale causes poor service. How can morale and performance be improved?",
-  "Loan recovery staff miss targets due to low motivation. How can management motivate them?",
-  "Non-Performing Assets (NPA) are high. What steps should be taken?",
-  "Delays in loan processing cause dissatisfaction. How can time management help?",
-  "Employees feel management decisions are biased. How does perception influence behaviour?",
-  "Loan recovery staff experience stress. How does stress affect behaviour and how can it be managed?",
-  "How does the Balance Sheet help assess the financial position of a society?",
-  "Balance Sheet shows high outstanding loans and overdues. How should management interpret this?",
-  "How can proper pricing improve demand for loans?",
-  "How can proper maintenance of books of accounts solve problems?",
-  "How can motivation improve employee morale and performance?",
-  "How will you handle confidential information?",
-  "How does stress influence human behaviour and how can it be managed?",
-  "How can scientific decision-making help management?",
-  "What are the powers and duties of an Assistant Secretary in a Co-operative Society?",
-  "How does employee attitude affect organizational performance?",
-  "How can management motivate employees?",
-  "How does control help prevent mismanagement?",
-  "Cash has been stolen from a cash box. What steps should be taken?",
-  "How does proper organising improve efficiency?",
-  "Describe a situation where unforeseen circumstances affected your punctuality. How did you handle it?",
-  "Describe a time you managed multiple tasks and meetings in a day. What strategies did you use?",
-  "If the Assistant Secretary post is not given to you, how will it affect the organisation?"
+  const QUESTION_VISIBLE_TIME = 20;
+  const QUESTION_TIME = 40;
+
+      const QUIZ_QUESTIONS = [
+
+/* 1 */
+{
+  question: "Management mainly deals with:",
+  options: ["Planning and controlling resources","Buying goods","Selling products","Manufacturing only"],
+  correct: "Planning and controlling resources"
+},
+
+/* 2 */
+{
+  question: "The primary function of management is:",
+  options: ["Planning","Gambling","Fighting","Traveling"],
+  correct: "Planning"
+},
+
+/* 3 */
+{
+  question: "POSDCORB stands for:",
+  options: [
+    "Planning, Organizing, Staffing, Directing, Coordinating, Reporting, Budgeting",
+    "Planning, Organizing, Staffing, Discipline, Control",
+    "Planning, Operating, Staffing, Directing",
+    "Planning, Ordering, Supervising"
+  ],
+  correct: "Planning, Organizing, Staffing, Directing, Coordinating, Reporting, Budgeting"
+},
+
+/* 4 */
+{
+  question: "Administration focuses mainly on:",
+  options: ["Policy making","Production","Selling","Marketing"],
+  correct: "Policy making"
+},
+
+/* 5 */
+{
+  question: "A good manager must possess:",
+  options: ["Leadership skills","Laziness","Anger","Negligence"],
+  correct: "Leadership skills"
+},
+
+/* 6 */
+{
+  question: "Decision making is a part of:",
+  options: ["Planning","Sleeping","Entertainment","Recreation"],
+  correct: "Planning"
+},
+
+/* 7 */
+{
+  question: "Coordination ensures:",
+  options: ["Harmony among departments","Conflicts","Delays","Inefficiency"],
+  correct: "Harmony among departments"
+},
+
+/* 8 */
+{
+  question: "Management improves:",
+  options: ["Productivity","Confusion","Waste","Delay"],
+  correct: "Productivity"
+},
+
+/* 9 */
+{
+  question: "A manager’s main responsibility is:",
+  options: ["Achieving organizational goals","Personal profit","Avoiding work","Complaining"],
+  correct: "Achieving organizational goals"
+},
+
+/* 10 */
+{
+  question: "Leadership means:",
+  options: ["Influencing people to achieve goals","Ignoring employees","Fighting","Punishing workers"],
+  correct: "Influencing people to achieve goals"
+},
+
+/* 11 */
+{
+  question: "Communication means:",
+  options: ["Exchange of information","Silence","Writing only","Reading only"],
+  correct: "Exchange of information"
+},
+
+/* 12 */
+{
+  question: "Effective communication requires:",
+  options: ["Clarity","Confusion","Anger","Fear"],
+  correct: "Clarity"
+},
+
+/* 13 */
+{
+  question: "Non-verbal communication includes:",
+  options: ["Body language","Writing","Letters","Email"],
+  correct: "Body language"
+},
+
+/* 14 */
+{
+  question: "Feedback in communication means:",
+  options: ["Response to message","Ignoring message","Silence","Delay"],
+  correct: "Response to message"
+},
+
+/* 15 */
+{
+  question: "Communication barriers include:",
+  options: ["Noise","Understanding","Clarity","Listening"],
+  correct: "Noise"
+},
+
+/* 16 */
+{
+  question: "Downward communication flows from:",
+  options: ["Manager to employee","Employee to manager","Customer to manager","Supplier to company"],
+  correct: "Manager to employee"
+},
+
+/* 17 */
+{
+  question: "Written communication example:",
+  options: ["Report","Gesture","Smile","Facial expression"],
+  correct: "Report"
+},
+
+/* 18 */
+{
+  question: "Effective communication improves:",
+  options: ["Coordination","Confusion","Conflict","Delay"],
+  correct: "Coordination"
+},
+
+/* 19 */
+{
+  question: "Listening is:",
+  options: ["Important communication skill","Waste of time","Not necessary","Optional"],
+  correct: "Important communication skill"
+},
+
+/* 20 */
+{
+  question: "Communication helps in:",
+  options: ["Decision making","Ignoring problems","Increasing confusion","Delaying work"],
+  correct: "Decision making"
+},
+
+/* 21 */
+{
+  question: "Global warming is mainly caused by:",
+  options: ["Greenhouse gases","Oxygen","Nitrogen","Rain"],
+  correct: "Greenhouse gases"
+},
+
+/* 22 */
+{
+  question: "The 3R principle stands for:",
+  options: ["Reduce, Reuse, Recycle","Read, Run, Rest","Rise, Return, Repeat","Reduce, Replace, Run"],
+  correct: "Reduce, Reuse, Recycle"
+},
+
+/* 23 */
+{
+  question: "Renewable energy source:",
+  options: ["Solar energy","Coal","Petrol","Diesel"],
+  correct: "Solar energy"
+},
+
+/* 24 */
+{
+  question: "Deforestation causes:",
+  options: ["Climate change","Clean air","More oxygen","Less pollution"],
+  correct: "Climate change"
+},
+
+/* 25 */
+{
+  question: "Environmental protection aims to:",
+  options: ["Preserve natural resources","Destroy forests","Increase pollution","Waste resources"],
+  correct: "Preserve natural resources"
+},
+
+/* 26 */
+{
+  question: "The Constitution of India came into force in:",
+  options: ["1950","1947","1949","1952"],
+  correct: "1950"
+},
+
+/* 27 */
+{
+  question: "The head of India is:",
+  options: ["President","Prime Minister","Governor","Speaker"],
+  correct: "President"
+},
+
+/* 28 */
+{
+  question: "Lok Sabha term is:",
+  options: ["5 years","3 years","4 years","6 years"],
+  correct: "5 years"
+},
+
+/* 29 */
+{
+  question: "Law ensures:",
+  options: ["Order in society","Confusion","Violence","Chaos"],
+  correct: "Order in society"
+},
+
+/* 30 */
+{
+  question: "Legal compliance means:",
+  options: ["Following laws","Breaking rules","Ignoring regulations","Avoiding taxes"],
+  correct: "Following laws"
+},
+
+/* 31 */
+{
+  question: "Contract means:",
+  options: ["Legal agreement","Verbal fight","Promise only","Suggestion"],
+  correct: "Legal agreement"
+},
+
+/* 32 */
+{
+  question: "Tax is:",
+  options: ["Government revenue","Private income","Charity","Donation"],
+  correct: "Government revenue"
+},
+
+/* 33 */
+{
+  question: "Labor laws protect:",
+  options: ["Workers’ rights","Managers only","Customers","Suppliers"],
+  correct: "Workers’ rights"
+},
+
+/* 34 */
+{
+  question: "Rule of law means:",
+  options: ["Law applies equally","Law for rich only","Law for poor only","No law"],
+  correct: "Law applies equally"
+},
+
+/* 35 */
+{
+  question: "Judiciary interprets:",
+  options: ["Laws","Taxes","Budgets","Salaries"],
+  correct: "Laws"
+},
+
+/* 36 */
+{
+  question: "Marketing means:",
+  options: ["Promoting products","Producing goods","Transporting goods","Storing goods"],
+  correct: "Promoting products"
+},
+
+/* 37 */
+{
+  question: "Market research helps to:",
+  options: ["Understand customers","Increase confusion","Reduce sales","Ignore market"],
+  correct: "Understand customers"
+},
+
+/* 38 */
+{
+  question: "Sales promotion includes:",
+  options: ["Discounts","Taxes","Punishment","Restrictions"],
+  correct: "Discounts"
+},
+
+/* 39 */
+{
+  question: "Demand means:",
+  options: ["Willingness to buy","Refusal to buy","Ignoring products","Rejecting goods"],
+  correct: "Willingness to buy"
+},
+
+/* 40 */
+{
+  question: "Supply means:",
+  options: ["Quantity sellers offer","Quantity buyers demand","Price only","Profit only"],
+  correct: "Quantity sellers offer"
+},
+
+/* 41 */
+{
+  question: "Advertisement aims to:",
+  options: ["Attract customers","Reduce sales","Destroy products","Waste money"],
+  correct: "Attract customers"
+},
+
+/* 42 */
+{
+  question: "Customer satisfaction leads to:",
+  options: ["Loyalty","Complaints","Loss","Conflict"],
+  correct: "Loyalty"
+},
+
+/* 43 */
+{
+  question: "Marketing mix includes:",
+  options: ["Product, Price, Place, Promotion","Price only","Product only","Promotion only"],
+  correct: "Product, Price, Place, Promotion"
+},
+
+/* 44 */
+{
+  question: "Economics studies:",
+  options: ["Production and consumption","Politics only","Sports only","Religion"],
+  correct: "Production and consumption"
+},
+
+/* 45 */
+{
+  question: "Inflation means:",
+  options: ["Rise in prices","Fall in prices","Stable prices","Zero prices"],
+  correct: "Rise in prices"
+},
+
+/* 46 */
+{
+  question: "GDP stands for:",
+  options: ["Gross Domestic Product","Global Domestic Price","Gross Development Plan","Government Development Program"],
+  correct: "Gross Domestic Product"
+},
+
+/* 47 */
+{
+  question: "Sales forecasting helps:",
+  options: ["Plan production","Stop production","Ignore market","Reduce planning"],
+  correct: "Plan production"
+},
+
+/* 48 */
+{
+  question: "Branding means:",
+  options: ["Creating product identity","Destroying product","Ignoring product","Hiding product"],
+  correct: "Creating product identity"
+},
+
+/* 49 */
+{
+  question: "Market segmentation means:",
+  options: ["Dividing market into groups","Increasing prices","Reducing products","Stopping sales"],
+  correct: "Dividing market into groups"
+},
+
+/* 50 */
+{
+  question: "Profit equals:",
+  options: ["Revenue – Cost","Cost – Revenue","Price – Sales","Demand – Supply"],
+  correct: "Revenue – Cost"
+},
+
+/* 51 */
+{
+  question: "Accounting records:",
+  options: ["Financial transactions","Weather","Sports","Politics"],
+  correct: "Financial transactions"
+},
+
+/* 52 */
+{
+  question: "Balance sheet shows:",
+  options: ["Financial position","Sales only","Production","Marketing"],
+  correct: "Financial position"
+},
+
+/* 53 */
+{
+  question: "Assets are:",
+  options: ["Valuable resources","Debts","Losses","Expenses"],
+  correct: "Valuable resources"
+},
+
+/* 54 */
+{
+  question: "Liabilities mean:",
+  options: ["Obligations","Assets","Profits","Sales"],
+  correct: "Obligations"
+},
+
+/* 55 */
+{
+  question: "Capital means:",
+  options: ["Owner’s investment","Debt","Expense","Loss"],
+  correct: "Owner’s investment"
+},
+
+/* 56 */
+{
+  question: "Budgeting helps:",
+  options: ["Financial planning","Wasting money","Increasing loss","Ignoring expenses"],
+  correct: "Financial planning"
+},
+
+/* 57 */
+{
+  question: "Financial management deals with:",
+  options: ["Funds","Machines","Weather","Politics"],
+  correct: "Funds"
+},
+
+/* 58 */
+{
+  question: "Profit and loss account shows:",
+  options: ["Profit or loss","Assets","Liabilities","Capital"],
+  correct: "Profit or loss"
+},
+
+/* 59 */
+{
+  question: "Cost accounting helps:",
+  options: ["Cost control","Cost increase","Sales reduction","Profit reduction"],
+  correct: "Cost control"
+},
+
+/* 60 */
+{
+  question: "Management accounting supports:",
+  options: ["Decision making","Entertainment","Sports only","Politics"],
+  correct: "Decision making"
+},
+
+/* 61 */
+{
+  question: "Break-even point means:",
+  options: ["No profit no loss","Maximum profit","Maximum loss","Sales zero"],
+  correct: "No profit no loss"
+},
+
+/* 62 */
+{
+  question: "Working capital means:",
+  options: ["Short-term funds","Long-term debt","Machinery","Building"],
+  correct: "Short-term funds"
+},
+
+/* 63 */
+{
+  question: "Cash flow means:",
+  options: ["Movement of cash","Movement of goods","Movement of workers","Movement of machines"],
+  correct: "Movement of cash"
+},
+
+/* 64 */
+{
+  question: "Depreciation means:",
+  options: ["Decrease in asset value","Increase in profit","Increase in asset value","Increase in sales"],
+  correct: "Decrease in asset value"
+},
+
+/* 65 */
+{
+  question: "Financial statement analysis helps:",
+  options: ["Decision making","Ignoring finances","Reducing profit","Increasing confusion"],
+  correct: "Decision making"
+},
+
+/* 66 */
+{
+  question: "2, 4, 8, 16, ?",
+  options: ["32","20","24","30"],
+  correct: "32"
+},
+
+/* 67 */
+{
+  question: "Odd one out:",
+  options: ["Apple","Banana","Mango","Carrot"],
+  correct: "Carrot"
+},
+
+/* 68 */
+{
+  question: "If CAT = 24, DOG = ?",
+  options: ["26","25","27","28"],
+  correct: "26"
+},
+
+/* 69 */
+{
+  question: "5, 10, 20, 40, ?",
+  options: ["80","70","60","50"],
+  correct: "80"
+},
+
+/* 70 */
+{
+  question: "A is father of B. B is mother of C. A is C’s:",
+  options: ["Grandfather","Father","Uncle","Brother"],
+  correct: "Grandfather"
+},
+
+/* 71 */
+{
+  question: "Mirror image of 6:",
+  options: ["9","6","3","8"],
+  correct: "9"
+},
+
+/* 72 */
+{
+  question: "3, 6, 9, 12, ?",
+  options: ["15","16","18","20"],
+  correct: "15"
+},
+
+/* 73 */
+{
+  question: "Odd one:",
+  options: ["Cow","Dog","Cat","Car"],
+  correct: "Car"
+},
+
+/* 74 */
+{
+  question: "A : B :: C : ?",
+  options: ["D","E","F","G"],
+  correct: "D"
+},
+
+/* 75 */
+{
+  question: "1, 3, 6, 10, ?",
+  options: ["15","16","18","20"],
+  correct: "15"
+},
+
+/* 86 */
+{
+  question: "Next letter: A, C, E, G, ?",
+  options: ["I","J","H","K"],
+  correct: "I"
+},
+
+/* 87 */
+{
+  question: "Next number: 10, 20, 30, ?",
+  options: ["40","50","35","45"],
+  correct: "40"
+},
+
+/* 88 */
+{
+  question: "If all roses are flowers:",
+  options: ["Some flowers are roses","All flowers are roses","No flowers are roses","None"],
+  correct: "Some flowers are roses"
+},
+
+/* 89 */
+{
+  question: "Sequence: 1, 4, 9, 16, ?",
+  options: ["25","20","24","22"],
+  correct: "25"
+},
+
+/* 90 */
+{
+  question: "Odd one:",
+  options: ["Square","Triangle","Circle","Mango"],
+  correct: "Mango"
+},
+
+/* 91 */
+{
+  question: "If MONDAY coded as NPOEBZ, TUESDAY coded as:",
+  options: ["UVFTEBZ","UVFTDAY","TVFTDAY","VFTDAY"],
+  correct: "UVFTEBZ"
+},
+
+/* 92 */
+{
+  question: "Shape reasoning – triangle has:",
+  options: ["3 sides","4 sides","5 sides","6 sides"],
+  correct: "3 sides"
+},
+
+/* 93 */
+{
+  question: "Next pattern: 2, 6, 12, 20, ?",
+  options: ["30","25","28","32"],
+  correct: "30"
+},
+
+/* 94 */
+{
+  question: "Clock reasoning – 12 hours =",
+  options: ["360°","180°","270°","90°"],
+  correct: "360°"
+},
+
+/* 95 */
+{
+  question: "If A = 1, B = 2, then Z =",
+  options: ["26","24","25","27"],
+  correct: "26"
+},
+
+/* 96 */
+{
+  question: "Next number: 7, 14, 21, ?",
+  options: ["28","25","30","24"],
+  correct: "28"
+},
+
+/* 97 */
+{
+  question: "Odd one:",
+  options: ["Red","Blue","Green","Table"],
+  correct: "Table"
+},
+
+/* 98 */
+{
+  question: "Next letter: B, D, F, H, ?",
+  options: ["J","K","I","L"],
+  correct: "J"
+},
+
+/* 99 */
+{
+  question: "Even number:",
+  options: ["7","8","9","11"],
+  correct: "8"
+},
+
+/* 100 */
+{
+  question: "Logical statement: All men are mortal. Ram is a man. Therefore:",
+  options: ["Ram is mortal","Ram is immortal","Ram is animal","None"],
+  correct: "Ram is mortal"
+}
+
 ];
 
-const QUESTIONS_JUNIOR_EXECUTIVE = [
-  "What is management? Explain its main functions.",
-  "Explain the importance of planning in an organization.",
-  "What is leadership? Describe its types.",
-  "Define motivation and explain its importance.",
-  "Explain decision-making process in management.",
-  "What is communication? Why is it important in management?",
-  "Describe principles of scientific management by Frederick Winslow Taylor.",
-  "What is organizational structure?",
-  "Explain the concept of corporate social responsibility (CSR).",
-  "What is performance appraisal?",
-  "What is a cooperative society?",
-  "Explain principles of cooperative movement.",
-  "What is the role of cooperatives in rural development?",
-  "Describe the history of cooperative movement in India.",
-  "What are types of cooperative societies?",
-  "Explain the role of National Cooperative Development Corporation (NCDC).",
-  "What are advantages of cooperative societies?",
-  "What challenges do cooperative societies face?",
-  "Explain the importance of dairy cooperatives in India.",
-  "What is member participation in cooperatives?",
-  "What is the Constitution of India?",
-  "Explain Fundamental Rights.",
-  "What is the importance of Directive Principles of State Policy?",
-  "Explain the concept of Rule of Law.",
-  "What is the Right to Information Act, 2005?",
-  "What is Consumer Protection Act, 2019?",
-  "Define contract under Indian Contract Act, 1872.",
-  "Explain the concept of legal liability.",
-  "What is Public Interest Litigation (PIL)?",
-  "Explain role of Supreme Court of India.",
-  "What is social justice?",
-  "Explain importance of education in social development.",
-  "What is gender equality?",
-  "Describe the impact of urbanization.",
-  "What is poverty alleviation?",
-  "Explain digital divide.",
-  "What is social responsibility of citizens?",
-  "Explain role of youth in nation-building.",
-  "Explain causes of Revolt of 1857.",
-  "Describe role of Mahatma Gandhi in freedom struggle.",
-  "What was Non-Cooperation Movement?",
-  "Explain significance of Dandi March.",
-  "What were features of Indian National Movement?",
-  "What is importance of Constitution adopted in 1950?",
-  "What is sustainable development?",
-  "Explain causes of climate change.",
-  "What is biodiversity?",
-  "Explain importance of renewable energy.",
-  "What is Environmental Protection Act, 1986?",
-  "Suggest measures for environmental conservation."
-];
 
-const QUESTIONS_SENIOR_EXECUTIVE = [
-  "Discuss the significance of Financial Forecasting and Budgetary Control.",
-  "What is Risk Management in Finance? Explain its importance.",
-  "Discuss the role of Financial Statements in evaluating organizational performance.",
-  "What is a co-operative? Explain its basic principles.",
-  "What is Cost Management, and how does it contribute to profitability?",
-  "What are the different types of co-operatives? Explain briefly.",
-  "Explain the management structure of a co-operative society.",
-  "What is the role of government in the co-operative sector?",
-  "Explain the relevance of co-operatives in the present economic scenario.",
-  "Define Management and explain its role at the senior executive level.",
-  "Discuss the role of leadership in effective management.",
-  "What is Risk Management? Explain its relevance for senior executives.",
-  "Explain the role and responsibilities of a Senior Executive in an organization.",
-  "Explain the concept of democracy.",
-  "What are the main functions of a government?",
-  "What is the difference between a presidential and parliamentary system?",
-  "What is the difference between a presidential and parliamentary system?",
-  "What is the significance of elections in a democracy?",
-  "What is corporate environmental responsibility (CER) and why is it critical for senior executives?",
-  "How can environmental sustainability be integrated into corporate strategy?",
-  "Critically examine the role of State Governments in balancing economic growth with social equity in policy formulation.",
-  "Evaluate the role of monitoring and evaluation (M&E) systems in improving the effectiveness of State Government policies.",
-  "Discuss the importance of Centre–State relations in Union Government policymaking and implementation. How can cooperative federalism be strengthened?",
-  "Discuss the role of a Senior Executive (Discipline) in strengthening organizational governance and ethical standards.",
-  "Describe the responsibilities of a Senior Executive (Discipline) in handling major penalty cases and sensitive misconduct matters.",
-  "Highlight the importance of documentation, reporting, and review mechanisms in disciplinary administration at the senior executive level.",
-  "Explain how you would lead a marketing team to improve brand positioning in a saturated market.",
-  "Describe a time when you had to handle a marketing crisis or manage a brand reputation issue. What steps did you take, and what was the outcome?",
-  "With a limited marketing budget, how would you decide between short-term campaigns for immediate sales and long-term brand-building initiatives?",
-  "Can you share an example of how you managed conflicting schedules, high-level meetings, and tight deadlines while ensuring punctuality and efficiency? What tools or strategies did you use?",
-  "Tell us about a time when you had to address a punctuality or time-management issue within your team or department. How did you handle it, and what were the results?",
-  "How do you personally ensure punctuality and reliability in your daily executive responsibilities, particularly when overseeing multiple teams or high-stakes projects?",
-  "Ethics, Risk Management, and Corporate Governance - Explain.",
-  "A senior executive must balance compliance with business strategy. How would you evaluate the impact of GST on pricing, supply chain decisions, and profitability? Provide an example of how GST considerations could influence strategic business decisions.",
-  "PAN is critical for tax compliance and financial transactions in India. How would you design a framework to ensure that all employees, clients, and vendors have valid PANs and that the organization remains compliant with regulatory requirements?",
-  "Describe a situation where an incorrect or missing PAN caused issues for the company, such as delayed tax filings or TDS discrepancies. How would you lead your team to identify, rectify, and prevent such issues in the future?",
-  "Organizational Ethics and Culture – Specify.",
-  "Handling Conflicts of Interest and Accountability – Explain.",
-  "Continuous Performance Improvement – Explain.",
-  "How does the Constitution of India recognize and promote co-operative societies?",
-  "Explain the significance of the 97th Constitutional Amendment for co-operative societies.",
-  "What is Part IX-B of the Constitution and why is it important for governance of co-operative societies?",
-  "How are legislative powers over co-operative societies distributed under the Constitution?",
-  "What constitutional safeguards exist to ensure democratic control in co-operative societies?",
-  "Explain the role of Article 43B in strengthening co-operative institutions?",
-  "How does the Constitution balance state regulation and autonomy of co-operative societies?",
-  "What is the constitutional role of co-operative societies in achieving economic democracy?",
-  "Can a co-operative society’s board be superseded under the Constitution?",
-  "What is the role of Secretary in a Co-operative Society?",
-  "Explain the Leadership Qualities."
-];
+  const login = document.getElementById("login");
+  const exam = document.getElementById("exam");
+  const thankyou = document.getElementById("thankyou");
+  const startBtn = document.getElementById("startBtn");
+  const nextBtn = document.getElementById("nextBtn");
 
-const QUESTIONS_AGM = [
-"What is Finance, and why is it important for an organization?",
+  const nameInput = document.getElementById("studentName");
+  const emailInput = document.getElementById("studentEmail");
+  const timerEl = document.getElementById("timer");
+  const questionEl = document.getElementById("question");
+  const optionsEl = document.getElementById("options");
 
-"Explain the concept of Financial Planning.",
+  let index = 0;
+  let answers = [];
+  let timer = null;
+  let hideTimer = null;
+  let timeLeft = QUESTION_TIME;
+  let examFinished = false;
 
-"What are the main objectives of Financial Management?",
+  startBtn.addEventListener("click", () => {
+    if (!nameInput.value.trim() || !emailInput.value.trim()) {
+      alert("Enter name and email");
+      return;
+    }
 
-"What is Working Capital, and why is it important?",
+    login.classList.add("hidden");
+    exam.classList.remove("hidden");
+    document.documentElement.requestFullscreen?.();
+    loadQuestion();
+  });
 
-"Explain the difference between Capital Expenditure and Revenue Expenditure.",
+  function loadQuestion() {
+    const q = QUIZ_QUESTIONS[index];
 
-"What is Budgeting, and what are its advantages?",
+    questionEl.classList.remove("scrolling-question");
+    void questionEl.offsetWidth;
+    questionEl.textContent = q.question;
+    questionEl.style.visibility = "visible";
+    questionEl.classList.add("scrolling-question");
 
-"Explain the concept of Cash Flow.",
+    optionsEl.innerHTML = "";
+    q.options.forEach((opt, i) => {
+      const label = document.createElement("label");
+      label.className = "block border p-2 rounded cursor-pointer";
+      label.innerHTML = `<input type="radio" name="option" value="${opt}" class="mr-2">${opt}`;
+      optionsEl.appendChild(label);
+    });
 
-"What are Financial Statements, and why are they important?",
+    hideTimer = setTimeout(() => {
+      questionEl.style.visibility = "hidden";
+    }, QUESTION_VISIBLE_TIME * 1000);
 
-"What is the role of a Junior Executive in the Finance Department?",
+    timeLeft = QUESTION_TIME;
+    updateTimer();
 
-"Explain the importance of Internal Control in Finance.",
-
-"What is a Co-operative? Explain its basic concept.",
-
-"Explain the main objectives of the Co-operative Movement.",
-
-"Describe the principles of Co-operation.",
-
-"What are the different types of Co-operative Societies?",
-
-"Explain the importance of Co-operatives in economic development.",
-
-"What is the organizational structure of a Co-operative Society?",
-
-"Explain the role of a Junior Executive in a Co-operative Society.",
-
-"What is the importance of Membership in a Co-operative Society?",
-
-"Explain the concept of Democratic Management in Co-operatives.",
-
-"What is the role of Co-operative Education and Training?",
-
-"What is Management? Explain its importance in an organization.",
-
-"Explain the main functions of management.",
-
-"What is Planning? Discuss its significance.",
-
-"Define Organizing and explain its process.",
-
-"What is Staffing? Why is it important?",
-
-"Explain the concept of Motivation.",
-
-"What is Leadership? State its qualities.",
-
-"Define Communication and explain its importance in management.",
-
-"What is Controlling? Describe its steps.",
-
-"Explain the role of a Junior Executive in an organization.",
-
-"What is politics and why is it important in society?",
-
-"Explain the concept of democracy.",
-
-"What are the main functions of a government?",
-
-"Define political parties and their role.",
-
-"What is the difference between a presidential and parliamentary system?",
-
-"What is the meaning of political ideology?",
-
-"Explain the concept of separation of powers.",
-
-"What is the significance of elections in a democracy?",
-
-"Define civil rights and give examples.",
-
-"How does public policy impact society?",
-
-"What is environmental sustainability and why is it important for businesses?",
-
-"Explain the main causes of air pollution.",
-
-"What are the major types of waste, and how can they be managed?",
-
-"How does climate change affect the environment and businesses?",
-
-"What is the role of environmental policies in an organization?",
-
-"Explain the concept of carbon footprint and how it can be reduced.",
-
-"What are renewable and non-renewable resources? Give examples.",
-
-"Describe the concept of circular economy.",
-
-"How can businesses contribute to environmental conservation?",
-
-"What is the importance of Environmental Impact Assessment (EIA) in project planning?"
-];
-
-
-/* ================================================= */
-
-const QUESTION_VISIBLE_TIME = 20; // seconds
-const ANSWER_TIME = 100;          // seconds
-
-let QUESTIONS = [];
-let studentName = "", studentEmail = "", studentRole = "";
-let answers = [], index = 0;
-let questionTimer, answerTimer, answerTimeLeft;
-let examFinished = false;
-
-/* START */
-function startExam() {
-  studentName = document.getElementById("studentName").value.trim();
-  studentEmail = document.getElementById("studentEmail").value.trim();
-  studentRole = document.getElementById("studentRole").value;
-
-  if (!studentName || !studentEmail || !studentRole) {
-    alert("Please enter Name, Email and select Role");
-    return;
+    timer = setInterval(() => {
+      timeLeft--;
+      updateTimer();
+      if (timeLeft <= 0) nextQuestion();
+    }, 1000);
   }
 
-  //QUESTIONS = studentRole === "assistant"
-    //? QUESTIONS_ASSISTANT_SECRETARY
-    //: QUESTIONS_JUNIOR_EXECUTIVE;
-	
-	switch (studentRole) {
-  case "assistant":
-    QUESTIONS = QUESTIONS_ASSISTANT_SECRETARY;
-    break;
+  function updateTimer() {
+    timerEl.textContent = `Time left: ${timeLeft}s`;
+  }
 
-  case "junior":
-    QUESTIONS = QUESTIONS_JUNIOR_EXECUTIVE;
-    break;
+  function nextQuestion() {
+    clearInterval(timer);
+    clearTimeout(hideTimer);
 
-  case "senior":
-    QUESTIONS = QUESTIONS_SENIOR_EXECUTIVE;
-    break;
+    const selected = document.querySelector('input[name="option"]:checked');
+    answers.push(selected ? selected.value : "Not Answered");
 
-  case "agm":
-    QUESTIONS = QUESTIONS_AGM;
-    break;
+    index++;
+    index < QUIZ_QUESTIONS.length ? loadQuestion() : finishExam();
+  }
 
-  default:
-    alert("Invalid role selected");
-    return;
-}
+  nextBtn.addEventListener("click", nextQuestion);
 
+  //function sendResultsEmail() {
+    //let result = "";
+    //QUIZ_QUESTIONS.forEach((q, i) => {
+      //result += `Q${i+1}: ${q.question}\nAnswer: ${answers[i]}\n\n`;
+    //});
 
-  resetState();
+    //emailjs.send("service_8yr4zf5",   
+    //"template_kyqnyrd",  {
+      //student_name: nameInput.value,
+      //student_email: emailInput.value,
+      //answers: result
+    //}).catch(err => console.error("EmailJS error:", err));
+  //}
+  
+  
+  function calculateScore() {
+  let score = 0;
 
-  document.getElementById("login").classList.add("hidden");
-  document.getElementById("exam").classList.remove("hidden");
-
-  document.documentElement.requestFullscreen?.();
-  loadQuestion();
-}
-
-/* RESET */
-function resetState() {
-  answers = [];
-  index = 0;
-  examFinished = false;
-}
-
-/* LOAD QUESTION */
-function loadQuestion() {
-  const q = document.getElementById("question");
-
-  q.classList.remove("scrolling-question");
-  void q.offsetWidth;
-
-  q.innerText = QUESTIONS[index];
-  q.style.visibility = "visible";
-  q.classList.add("scrolling-question");
-
-  document.getElementById("answer").value = "";
-  answerTimeLeft = ANSWER_TIME;
-  updateTimer();
-
-  clearTimeout(questionTimer);
-  clearInterval(answerTimer);
-
-  // Hide question after 20 seconds
-  questionTimer = setTimeout(() => {
-    q.style.visibility = "hidden";
-  }, QUESTION_VISIBLE_TIME * 1000);
-
-  // Answer timer
-  answerTimer = setInterval(() => {
-    answerTimeLeft--;
-    updateTimer();
-    if (answerTimeLeft <= 0) nextQuestion();
-  }, 1000);
-}
-
-/* TIMER */
-function updateTimer() {
-  document.getElementById("timer").innerText =
-    `Answer time left: ${answerTimeLeft}s`;
-}
-
-/* NEXT */
-function nextQuestion() {
-  if (examFinished) return;
-
-  clearTimeout(questionTimer);
-  clearInterval(answerTimer);
-
-  answers.push(document.getElementById("answer").value);
-  index++;
-
-  index < QUESTIONS.length ? loadQuestion() : normalFinish();
-}
-
-/* FINISH */
-function normalFinish() {
-  examFinished = true;
-  clearTimeout(questionTimer);
-  clearInterval(answerTimer);
-  exitFullscreen();
-  sendAnswersByEmail();
-}
-
-
-/* GO BACK */
-function goToLogin() {
-  document.getElementById("exam").classList.add("hidden");
-  document.getElementById("login").classList.remove("hidden");
-}
-
-/* EMAIL (EmailJS v4) */
-function sendAnswersByEmail() {
-  let formattedAnswers = "";
-
-  QUESTIONS.forEach((q, i) => {
-    formattedAnswers += `Q${i + 1}: ${q}\n`;
-    formattedAnswers += `Answer:\n${answers[i] || "No answer"}\n\n`;
+  QUIZ_QUESTIONS.forEach((q, i) => {
+    if (answers[i] === q.correct) {
+      score++;
+    }
   });
+
+  return score;
+}
+
+
+  function sendResultsEmail() {
+  let result = "";
+
+  QUIZ_QUESTIONS.forEach((q, i) => {
+    result += 
+`Q${i + 1}: ${q.question}
+Selected Answer: ${answers[i]}
+Correct Answer: ${q.correct}
+
+`;
+  });
+
+  const score = calculateScore();
+  const total = QUIZ_QUESTIONS.length;
 
   emailjs.send(
-    "service_8yr4zf5",   // ✅ Gmail service ID
-    "template_kyqnyrd",  // ✅ your template ID
+    "service_8yr4zf5",
+    "template_kyqnyrd",
     {
-      student_name: studentName,
-      student_email: studentEmail,
-      student_role: studentRole,
-      answers: formattedAnswers,
-      reply_to: studentEmail
+      student_name: nameInput.value,
+      student_email: emailInput.value,
+      score: `${score} / ${total}`,
+      answers: result
     }
-  ).then(() => {
-    alert("Exam submitted successfully");
-    goToLogin(); // back to home
-  }).catch(err => {
-  }).catch(err => {
-    alert("Submission failed. Please contact admin.");
-    console.error("EmailJS Error:", err);
+  ).catch(err => console.error("EmailJS error:", err));
+}
+
+
+  function finishExam() {
+    examFinished = true;
+    clearInterval(timer);
+    clearTimeout(hideTimer);
+    document.exitFullscreen?.();
+
+    sendResultsEmail();
+
+    exam.classList.add("hidden");
+    thankyou.classList.remove("hidden");
+
+    setTimeout(() => location.reload(), 5000);
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && !examFinished) {
+      alert("Tab switching detected. Exam terminated.");
+      location.reload();
+    }
   });
-}
 
-
-/* SECURITY */
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden && !examFinished) {
-    alert("Tab switching detected. Exam terminated.");
-    location.reload();
-  }
 });
-
-document.addEventListener("keydown", e => {
-  if ((e.ctrlKey || e.metaKey) && ["c","v"].includes(e.key.toLowerCase())) {
-    e.preventDefault();
-    alert("Copy / Paste not allowed");
-  }
-});
-
-document.addEventListener("contextmenu", e => e.preventDefault());
-
-window.onbeforeunload = () => {
-  if (!examFinished) return "Exam in progress";
-};
-
-function exitFullscreen() {
-  document.fullscreenElement && document.exitFullscreen();
-}
 </script>
 
 </body>
