@@ -1,4 +1,90 @@
-const QUIZ_QUESTIONS = [
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Secure Online Quiz</title>
+
+<link rel="icon" type="image/png" href="image.png">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- EmailJS -->
+<script type="text/javascript"
+  src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script type="text/javascript">
+  emailjs.init('AQrOoA9vgEUwlbyma'); // ✅ your public key
+</script>
+
+<style>
+@keyframes scrollRightToLeft {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+.scrolling-question {
+  white-space: nowrap;
+  animation: scrollRightToLeft 10s linear 2 forwards;
+}
+</style>
+</head>
+
+<body class="bg-slate-100 h-screen flex items-center justify-center overflow-hidden">
+
+<div class="bg-white shadow-2xl rounded-xl w-full max-w-xl p-6 max-h-[90vh] overflow-hidden">
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="flex justify-center mb-4">
+    <img src="THECOS_Google_Form_Header.png" class="max-h-24 object-contain">
+  </div>
+
+  <h1 class="text-2xl font-bold text-center mb-4">Online Quiz</h1>
+
+  <input id="studentName" class="w-full border p-2 mb-3 rounded" placeholder="Enter Full Name">
+  <input id="studentEmail" type="email" class="w-full border p-2 mb-4 rounded" placeholder="Enter Email Address">
+
+  <button id="startBtn" class="w-full bg-blue-600 text-white py-2 rounded">
+    Start Quiz
+  </button>
+</div>
+
+<!-- EXAM -->
+<div id="exam" class="hidden h-full flex flex-col">
+
+  <div class="flex justify-between mb-3">
+    <span id="timer" class="text-red-600 font-bold"></span>
+    <span class="text-sm text-gray-500">Tab switching disabled</span>
+  </div>
+
+  <div class="flex-1 overflow-y-auto">
+    <div class="overflow-hidden mb-4">
+      <h2 id="question" class="font-semibold text-lg"></h2>
+    </div>
+    <div id="options" class="space-y-2"></div>
+  </div>
+
+  <div class="pt-4 border-t">
+    <button id="nextBtn" class="bg-green-600 text-white px-5 py-2 rounded w-full">
+      Next
+    </button>
+  </div>
+</div>
+
+<!-- THANK YOU -->
+<div id="thankyou" class="hidden text-center">
+  <h1 class="text-2xl font-bold text-green-600 mb-4">✅ Thank You</h1>
+  <p class="text-gray-700 mb-2">Your exam has been submitted successfully.</p>
+  <p class="text-gray-500">You may now close this page.</p>
+</div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const QUESTION_VISIBLE_TIME = 20;
+  const QUESTION_TIME = 40;
+
+     const QUIZ_QUESTIONS = [
 
 /* 1 */
 {
@@ -706,3 +792,168 @@ const QUIZ_QUESTIONS = [
 }
 
 ];
+
+
+  const login = document.getElementById("login");
+  const exam = document.getElementById("exam");
+  const thankyou = document.getElementById("thankyou");
+  const startBtn = document.getElementById("startBtn");
+  const nextBtn = document.getElementById("nextBtn");
+
+  const nameInput = document.getElementById("studentName");
+  const emailInput = document.getElementById("studentEmail");
+  const timerEl = document.getElementById("timer");
+  const questionEl = document.getElementById("question");
+  const optionsEl = document.getElementById("options");
+
+  let index = 0;
+  let answers = [];
+  let timer = null;
+  let hideTimer = null;
+  let timeLeft = QUESTION_TIME;
+  let examFinished = false;
+
+  startBtn.addEventListener("click", () => {
+    if (!nameInput.value.trim() || !emailInput.value.trim()) {
+      alert("Enter name and email");
+      return;
+    }
+
+    login.classList.add("hidden");
+    exam.classList.remove("hidden");
+    document.documentElement.requestFullscreen?.();
+    loadQuestion();
+  });
+
+  function loadQuestion() {
+    const q = QUIZ_QUESTIONS[index];
+
+    questionEl.classList.remove("scrolling-question");
+    void questionEl.offsetWidth;
+    questionEl.textContent = q.question;
+    questionEl.style.visibility = "visible";
+    questionEl.classList.add("scrolling-question");
+
+    optionsEl.innerHTML = "";
+    q.options.forEach((opt, i) => {
+      const label = document.createElement("label");
+      label.className = "block border p-2 rounded cursor-pointer";
+      label.innerHTML = `<input type="radio" name="option" value="${opt}" class="mr-2">${opt}`;
+      optionsEl.appendChild(label);
+    });
+
+    hideTimer = setTimeout(() => {
+      questionEl.style.visibility = "hidden";
+    }, QUESTION_VISIBLE_TIME * 1000);
+
+    timeLeft = QUESTION_TIME;
+    updateTimer();
+
+    timer = setInterval(() => {
+      timeLeft--;
+      updateTimer();
+      if (timeLeft <= 0) nextQuestion();
+    }, 1000);
+  }
+
+  function updateTimer() {
+    timerEl.textContent = `Time left: ${timeLeft}s`;
+  }
+
+  function nextQuestion() {
+    clearInterval(timer);
+    clearTimeout(hideTimer);
+
+    const selected = document.querySelector('input[name="option"]:checked');
+    answers.push(selected ? selected.value : "Not Answered");
+
+    index++;
+    index < QUIZ_QUESTIONS.length ? loadQuestion() : finishExam();
+  }
+
+  nextBtn.addEventListener("click", nextQuestion);
+
+  //function sendResultsEmail() {
+    //let result = "";
+    //QUIZ_QUESTIONS.forEach((q, i) => {
+      //result += `Q${i+1}: ${q.question}\nAnswer: ${answers[i]}\n\n`;
+    //});
+
+    //emailjs.send("service_8yr4zf5",   
+    //"template_kyqnyrd",  {
+      //student_name: nameInput.value,
+      //student_email: emailInput.value,
+      //answers: result
+    //}).catch(err => console.error("EmailJS error:", err));
+  //}
+  
+  
+  function calculateScore() {
+  let score = 0;
+
+  QUIZ_QUESTIONS.forEach((q, i) => {
+    if (answers[i] === q.correct) {
+      score++;
+    }
+  });
+
+  return score;
+}
+
+
+  function sendResultsEmail() {
+  let result = "";
+
+  QUIZ_QUESTIONS.forEach((q, i) => {
+    result += 
+`Q${i + 1}: ${q.question}
+Selected Answer: ${answers[i]}
+Correct Answer: ${q.correct}
+
+`;
+  });
+
+  const score = calculateScore();
+  const total = QUIZ_QUESTIONS.length;
+
+  emailjs.send(
+    "service_8yr4zf5",
+    "template_kyqnyrd",
+    {
+      student_name: nameInput.value,
+      student_email: emailInput.value,
+      score: `${score} / ${total}`,
+      answers: result
+    }
+  ).catch(err => console.error("EmailJS error:", err));
+}
+
+
+  function finishExam() {
+    examFinished = true;
+    clearInterval(timer);
+    clearTimeout(hideTimer);
+    document.exitFullscreen?.();
+
+    sendResultsEmail();
+
+    exam.classList.add("hidden");
+    thankyou.classList.remove("hidden");
+
+    setTimeout(() => location.reload(), 5000);
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && !examFinished) {
+      alert("Tab switching detected. Exam terminated.");
+      location.reload();
+    }
+  });
+
+});
+</script>
+
+</body>
+</html>
+
+
