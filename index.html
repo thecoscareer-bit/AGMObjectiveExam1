@@ -84,715 +84,309 @@ document.addEventListener("DOMContentLoaded", () => {
   const QUESTION_VISIBLE_TIME = 20;
   const QUESTION_TIME = 40;
 
-     const QUIZ_QUESTIONS = [
+    const QUIZ_QUESTIONS = [
 
-/* 1 */
 {
-  question: "Management mainly deals with:",
-  options: ["Planning and controlling resources","Buying goods","Selling products","Manufacturing only"],
-  correct: "Planning and controlling resources"
+question: "Which management thinker introduced 'Management by Objectives (MBO)'?",
+options: ["Henry Mintzberg","Peter Drucker","Frederick Taylor","Max Weber"],
+correct: "Peter Drucker"
 },
 
-/* 2 */
 {
-  question: "The primary function of management is:",
-  options: ["Planning","Gambling","Fighting","Traveling"],
-  correct: "Planning"
+question: "The concept of bureaucratic organization was developed by:",
+options: ["Max Weber","Henri Fayol","Elton Mayo","Chester Barnard"],
+correct: "Max Weber"
 },
 
-/* 3 */
 {
-  question: "POSDCORB stands for:",
-  options: [
-    "Planning, Organizing, Staffing, Directing, Coordinating, Reporting, Budgeting",
-    "Planning, Organizing, Staffing, Discipline, Control",
-    "Planning, Operating, Staffing, Directing",
-    "Planning, Ordering, Supervising"
-  ],
-  correct: "Planning, Organizing, Staffing, Directing, Coordinating, Reporting, Budgeting"
+question: "Which function of management ensures activities are carried out according to plan?",
+options: ["Organizing","Directing","Staffing","Controlling"],
+correct: "Controlling"
 },
 
-/* 4 */
 {
-  question: "Administration focuses mainly on:",
-  options: ["Policy making","Production","Selling","Marketing"],
-  correct: "Policy making"
+question: "Scalar chain refers to:",
+options: ["Chain of command","Supply chain","Production chain","Financial chain"],
+correct: "Chain of command"
 },
 
-/* 5 */
 {
-  question: "A good manager must possess:",
-  options: ["Leadership skills","Laziness","Anger","Negligence"],
-  correct: "Leadership skills"
+question: "Which leadership theory focuses on leader traits?",
+options: ["Behavioral theory","Contingency theory","Trait theory","Systems theory"],
+correct: "Trait theory"
 },
 
-/* 6 */
 {
-  question: "Decision making is a part of:",
-  options: ["Planning","Sleeping","Entertainment","Recreation"],
-  correct: "Planning"
+question: "Which concept focuses on customer satisfaction and long-term relationships?",
+options: ["Product concept","Production concept","Selling concept","Marketing concept"],
+correct: "Marketing concept"
 },
 
-/* 7 */
 {
-  question: "Coordination ensures:",
-  options: ["Harmony among departments","Conflicts","Delays","Inefficiency"],
-  correct: "Harmony among departments"
+question: "The BCG matrix was developed by:",
+options: ["Boston Consulting Group","McKinsey & Company","Deloitte","KPMG"],
+correct: "Boston Consulting Group"
 },
 
-/* 8 */
 {
-  question: "Management improves:",
-  options: ["Productivity","Confusion","Waste","Delay"],
-  correct: "Productivity"
+question: "Which stage in the product life cycle usually has the highest profits?",
+options: ["Introduction","Growth","Maturity","Decline"],
+correct: "Maturity"
 },
 
-/* 9 */
 {
-  question: "A manager’s main responsibility is:",
-  options: ["Achieving organizational goals","Personal profit","Avoiding work","Complaining"],
-  correct: "Achieving organizational goals"
+question: "Market penetration strategy involves:",
+options: ["Increasing price","Increasing market share","Reducing production","Exporting products"],
+correct: "Increasing market share"
 },
 
-/* 10 */
 {
-  question: "Leadership means:",
-  options: ["Influencing people to achieve goals","Ignoring employees","Fighting","Punishing workers"],
-  correct: "Influencing people to achieve goals"
+question: "Customer Relationship Management (CRM) mainly aims to:",
+options: ["Maintain customer loyalty","Reduce production cost","Increase tax","Reduce inventory"],
+correct: "Maintain customer loyalty"
 },
 
-/* 11 */
 {
-  question: "Communication means:",
-  options: ["Exchange of information","Silence","Writing only","Reading only"],
-  correct: "Exchange of information"
+question: "Which accounting principle requires revenue to be recorded when earned?",
+options: ["Matching principle","Accrual principle","Consistency principle","Conservatism principle"],
+correct: "Accrual principle"
 },
 
-/* 12 */
 {
-  question: "Effective communication requires:",
-  options: ["Clarity","Confusion","Anger","Fear"],
-  correct: "Clarity"
+question: "Goodwill is classified as:",
+options: ["Current asset","Fixed liability","Intangible asset","Revenue asset"],
+correct: "Intangible asset"
 },
 
-/* 13 */
 {
-  question: "Non-verbal communication includes:",
-  options: ["Body language","Writing","Letters","Email"],
-  correct: "Body language"
+question: "Trial balance helps in:",
+options: ["Detecting all errors","Checking arithmetical accuracy","Calculating tax","Preparing audit report"],
+correct: "Checking arithmetical accuracy"
 },
 
-/* 14 */
 {
-  question: "Feedback in communication means:",
-  options: ["Response to message","Ignoring message","Silence","Delay"],
-  correct: "Response to message"
+question: "Which statement shows financial performance of a company?",
+options: ["Balance sheet","Cash flow statement","Income statement","Budget report"],
+correct: "Income statement"
 },
 
-/* 15 */
 {
-  question: "Communication barriers include:",
-  options: ["Noise","Understanding","Clarity","Listening"],
-  correct: "Noise"
+question: "Depreciation is charged to:",
+options: ["Reduce tax only","Increase capital","Increase profit","Allocate cost of asset"],
+correct: "Allocate cost of asset"
 },
 
-/* 16 */
 {
-  question: "Downward communication flows from:",
-  options: ["Manager to employee","Employee to manager","Customer to manager","Supplier to company"],
-  correct: "Manager to employee"
+question: "Which ratio measures liquidity?",
+options: ["Current ratio","Debt ratio","Profit margin","ROI"],
+correct: "Current ratio"
 },
 
-/* 17 */
 {
-  question: "Written communication example:",
-  options: ["Report","Gesture","Smile","Facial expression"],
-  correct: "Report"
+question: "Weighted Average Cost of Capital (WACC) is used for:",
+options: ["Sales forecasting","Tax calculation","Investment decisions","Payroll management"],
+correct: "Investment decisions"
 },
 
-/* 18 */
 {
-  question: "Effective communication improves:",
-  options: ["Coordination","Confusion","Conflict","Delay"],
-  correct: "Coordination"
+question: "Capital structure refers to:",
+options: ["Debt and equity mix","Assets and liabilities","Fixed assets","Current liabilities"],
+correct: "Debt and equity mix"
 },
 
-/* 19 */
 {
-  question: "Listening is:",
-  options: ["Important communication skill","Waste of time","Not necessary","Optional"],
-  correct: "Important communication skill"
+question: "Which financial tool evaluates investment profitability?",
+options: ["Ledger","Balance sheet","Trial balance","NPV"],
+correct: "NPV"
 },
 
-/* 20 */
 {
-  question: "Communication helps in:",
-  options: ["Decision making","Ignoring problems","Increasing confusion","Delaying work"],
-  correct: "Decision making"
+question: "Time value of money means:",
+options: ["Money loses value","Money today is worth more than future money","Money value is constant","Money only depends on taxes"],
+correct: "Money today is worth more than future money"
 },
 
-/* 21 */
 {
-  question: "Global warming is mainly caused by:",
-  options: ["Greenhouse gases","Oxygen","Nitrogen","Rain"],
-  correct: "Greenhouse gases"
+question: "Inflation caused by increased production costs is called:",
+options: ["Demand-pull inflation","Imported inflation","Structural inflation","Cost-push inflation"],
+correct: "Cost-push inflation"
 },
 
-/* 22 */
 {
-  question: "The 3R principle stands for:",
-  options: ["Reduce, Reuse, Recycle","Read, Run, Rest","Rise, Return, Repeat","Reduce, Replace, Run"],
-  correct: "Reduce, Reuse, Recycle"
+question: "Monetary policy in India is controlled by:",
+options: ["NITI Aayog","State Bank of India","Reserve Bank of India","Ministry of Finance"],
+correct: "Reserve Bank of India"
 },
 
-/* 23 */
 {
-  question: "Renewable energy source:",
-  options: ["Solar energy","Coal","Petrol","Diesel"],
-  correct: "Solar energy"
+question: "Fiscal deficit refers to:",
+options: ["Revenue minus expenditure","Expenditure minus revenue","Imports minus exports","Assets minus liabilities"],
+correct: "Expenditure minus revenue"
 },
 
-/* 24 */
 {
-  question: "Deforestation causes:",
-  options: ["Climate change","Clean air","More oxygen","Less pollution"],
-  correct: "Climate change"
+question: "GDP measures:",
+options: ["Population growth","Tax collection","Imports","Total production in a country"],
+correct: "Total production in a country"
 },
 
-/* 25 */
 {
-  question: "Environmental protection aims to:",
-  options: ["Preserve natural resources","Destroy forests","Increase pollution","Waste resources"],
-  correct: "Preserve natural resources"
+question: "A recession means:",
+options: ["Rapid economic growth","Decline in economic activity","Inflation rise","Export growth"],
+correct: "Decline in economic activity"
 },
 
-/* 26 */
 {
-  question: "The Constitution of India came into force in:",
-  options: ["1950","1947","1949","1952"],
-  correct: "1950"
+question: "Break-even point occurs when:",
+options: ["Profit is maximum","Cost is zero","Sales are lowest","Profit equals zero"],
+correct: "Profit equals zero"
 },
 
-/* 27 */
 {
-  question: "The head of India is:",
-  options: ["President","Prime Minister","Governor","Speaker"],
-  correct: "President"
+question: "Contribution margin equals:",
+options: ["Sales – Variable cost","Sales – Fixed cost","Profit – Tax","Revenue – Expenses"],
+correct: "Sales – Variable cost"
 },
 
-/* 28 */
 {
-  question: "Lok Sabha term is:",
-  options: ["5 years","3 years","4 years","6 years"],
-  correct: "5 years"
+question: "Standard costing is used for:",
+options: ["Budget control","Financial audit","Cost comparison","Inventory valuation"],
+correct: "Cost comparison"
 },
 
-/* 29 */
 {
-  question: "Law ensures:",
-  options: ["Order in society","Confusion","Violence","Chaos"],
-  correct: "Order in society"
+question: "Variance analysis is used in:",
+options: ["Financial planning","Marketing research","Human resource management","Cost control"],
+correct: "Cost control"
 },
 
-/* 30 */
 {
-  question: "Legal compliance means:",
-  options: ["Following laws","Breaking rules","Ignoring regulations","Avoiding taxes"],
-  correct: "Following laws"
+question: "Flexible budget adjusts according to:",
+options: ["Production level","Profit level","Tax rate","Interest rate"],
+correct: "Production level"
 },
 
-/* 31 */
 {
-  question: "Contract means:",
-  options: ["Legal agreement","Verbal fight","Promise only","Suggestion"],
-  correct: "Legal agreement"
+question: "Administrative theory was developed by:",
+options: ["Henri Fayol","Max Weber","Elton Mayo","Taylor"],
+correct: "Henri Fayol"
 },
 
-/* 32 */
 {
-  question: "Tax is:",
-  options: ["Government revenue","Private income","Charity","Donation"],
-  correct: "Government revenue"
+question: "Good governance emphasizes:",
+options: ["Bureaucracy only","Corruption","Monopoly","Transparency"],
+correct: "Transparency"
 },
 
-/* 33 */
 {
-  question: "Labor laws protect:",
-  options: ["Workers’ rights","Managers only","Customers","Suppliers"],
-  correct: "Workers’ rights"
+question: "Decentralization means:",
+options: ["Central authority only","Delegating authority to lower levels","Removing authority","Increasing hierarchy"],
+correct: "Delegating authority to lower levels"
 },
 
-/* 34 */
 {
-  question: "Rule of law means:",
-  options: ["Law applies equally","Law for rich only","Law for poor only","No law"],
-  correct: "Law applies equally"
+question: "Maslow’s highest level of need is:",
+options: ["Safety","Social","Self-actualization","Esteem"],
+correct: "Self-actualization"
 },
 
-/* 35 */
 {
-  question: "Judiciary interprets:",
-  options: ["Laws","Taxes","Budgets","Salaries"],
-  correct: "Laws"
+question: "Herzberg classified salary as:",
+options: ["Motivator","Hygiene factor","Psychological factor","Social factor"],
+correct: "Hygiene factor"
 },
 
-/* 36 */
 {
-  question: "Marketing means:",
-  options: ["Promoting products","Producing goods","Transporting goods","Storing goods"],
-  correct: "Promoting products"
+question: "Employee empowerment means:",
+options: ["Giving authority and responsibility","Punishment","Salary increase","Promotion only"],
+correct: "Giving authority and responsibility"
 },
 
-/* 37 */
 {
-  question: "Market research helps to:",
-  options: ["Understand customers","Increase confusion","Reduce sales","Ignore market"],
-  correct: "Understand customers"
+question: "The Paris Climate Agreement was adopted in:",
+options: ["2013","2015","2018","2020"],
+correct: "2015"
 },
 
-/* 38 */
 {
-  question: "Sales promotion includes:",
-  options: ["Discounts","Taxes","Punishment","Restrictions"],
-  correct: "Discounts"
+question: "Ozone layer protects earth from:",
+options: ["Infrared rays","Visible light","Ultraviolet rays","Gamma rays"],
+correct: "Ultraviolet rays"
 },
 
-/* 39 */
 {
-  question: "Demand means:",
-  options: ["Willingness to buy","Refusal to buy","Ignoring products","Rejecting goods"],
-  correct: "Willingness to buy"
+question: "The Constitution of India was adopted on:",
+options: ["26 January 1950","26 November 1949","15 August 1947","1 January 1950"],
+correct: "26 November 1949"
 },
 
-/* 40 */
 {
-  question: "Supply means:",
-  options: ["Quantity sellers offer","Quantity buyers demand","Price only","Profit only"],
-  correct: "Quantity sellers offer"
+question: "India follows:",
+options: ["Presidential system","Parliamentary system","Monarchy","Military rule"],
+correct: "Parliamentary system"
 },
 
-/* 41 */
 {
-  question: "Advertisement aims to:",
-  options: ["Attract customers","Reduce sales","Destroy products","Waste money"],
-  correct: "Attract customers"
+question: "The longest mountain range in the world is:",
+options: ["Andes","Himalayas","Alps","Rockies"],
+correct: "Andes"
 },
 
-/* 42 */
 {
-  question: "Customer satisfaction leads to:",
-  options: ["Loyalty","Complaints","Loss","Conflict"],
-  correct: "Loyalty"
+question: "The Tropic of Cancer passes through:",
+options: ["India","Japan","Germany","Canada"],
+correct: "India"
 },
 
-/* 43 */
 {
-  question: "Marketing mix includes:",
-  options: ["Product, Price, Place, Promotion","Price only","Product only","Promotion only"],
-  correct: "Product, Price, Place, Promotion"
+question: "Headquarters of the World Trade Organization is in:",
+options: ["London","Paris","Geneva","Washington"],
+correct: "Geneva"
 },
 
-/* 44 */
 {
-  question: "Economics studies:",
-  options: ["Production and consumption","Politics only","Sports only","Religion"],
-  correct: "Production and consumption"
+question: "The International Monetary Fund mainly deals with:",
+options: ["Military cooperation","Global financial stability","Tourism promotion","Education policy"],
+correct: "Global financial stability"
 },
 
-/* 45 */
 {
-  question: "Inflation means:",
-  options: ["Rise in prices","Fall in prices","Stable prices","Zero prices"],
-  correct: "Rise in prices"
+question: "The United Nations was founded in:",
+options: ["1919","1955","1945","1965"],
+correct: "1945"
 },
 
-/* 46 */
 {
-  question: "GDP stands for:",
-  options: ["Gross Domestic Product","Global Domestic Price","Gross Development Plan","Government Development Program"],
-  correct: "Gross Domestic Product"
+question: "The FIFA World Cup is organized by:",
+options: ["FIFA","International Olympic Committee","ICC","UEFA"],
+correct: "FIFA"
 },
 
-/* 47 */
 {
-  question: "Sales forecasting helps:",
-  options: ["Plan production","Stop production","Ignore market","Reduce planning"],
-  correct: "Plan production"
+question: "Olympic Games are governed by:",
+options: ["International Olympic Committee","FIFA","ICC","UNESCO"],
+correct: "International Olympic Committee"
 },
 
-/* 48 */
 {
-  question: "Branding means:",
-  options: ["Creating product identity","Destroying product","Ignoring product","Hiding product"],
-  correct: "Creating product identity"
+question: "BRICS recently expanded with new members in 2024 including:",
+options: ["Argentina","Saudi Arabia","Japan","Germany"],
+correct: "Saudi Arabia"
 },
 
-/* 49 */
 {
-  question: "Market segmentation means:",
-  options: ["Dividing market into groups","Increasing prices","Reducing products","Stopping sales"],
-  correct: "Dividing market into groups"
+question: "The headquarters of BRICS New Development Bank is in:",
+options: ["Shanghai","Beijing","Moscow","Delhi"],
+correct: "Shanghai"
 },
 
-/* 50 */
 {
-  question: "Profit equals:",
-  options: ["Revenue – Cost","Cost – Revenue","Price – Sales","Demand – Supply"],
-  correct: "Revenue – Cost"
-},
-
-/* 51 */
-{
-  question: "Accounting records:",
-  options: ["Financial transactions","Weather","Sports","Politics"],
-  correct: "Financial transactions"
-},
-
-/* 52 */
-{
-  question: "Balance sheet shows:",
-  options: ["Financial position","Sales only","Production","Marketing"],
-  correct: "Financial position"
-},
-
-/* 53 */
-{
-  question: "Assets are:",
-  options: ["Valuable resources","Debts","Losses","Expenses"],
-  correct: "Valuable resources"
-},
-
-/* 54 */
-{
-  question: "Liabilities mean:",
-  options: ["Obligations","Assets","Profits","Sales"],
-  correct: "Obligations"
-},
-
-/* 55 */
-{
-  question: "Capital means:",
-  options: ["Owner’s investment","Debt","Expense","Loss"],
-  correct: "Owner’s investment"
-},
-
-/* 56 */
-{
-  question: "Budgeting helps:",
-  options: ["Financial planning","Wasting money","Increasing loss","Ignoring expenses"],
-  correct: "Financial planning"
-},
-
-/* 57 */
-{
-  question: "Financial management deals with:",
-  options: ["Funds","Machines","Weather","Politics"],
-  correct: "Funds"
-},
-
-/* 58 */
-{
-  question: "Profit and loss account shows:",
-  options: ["Profit or loss","Assets","Liabilities","Capital"],
-  correct: "Profit or loss"
-},
-
-/* 59 */
-{
-  question: "Cost accounting helps:",
-  options: ["Cost control","Cost increase","Sales reduction","Profit reduction"],
-  correct: "Cost control"
-},
-
-/* 60 */
-{
-  question: "Management accounting supports:",
-  options: ["Decision making","Entertainment","Sports only","Politics"],
-  correct: "Decision making"
-},
-
-/* 61 */
-{
-  question: "Break-even point means:",
-  options: ["No profit no loss","Maximum profit","Maximum loss","Sales zero"],
-  correct: "No profit no loss"
-},
-
-/* 62 */
-{
-  question: "Working capital means:",
-  options: ["Short-term funds","Long-term debt","Machinery","Building"],
-  correct: "Short-term funds"
-},
-
-/* 63 */
-{
-  question: "Cash flow means:",
-  options: ["Movement of cash","Movement of goods","Movement of workers","Movement of machines"],
-  correct: "Movement of cash"
-},
-
-/* 64 */
-{
-  question: "Depreciation means:",
-  options: ["Decrease in asset value","Increase in profit","Increase in asset value","Increase in sales"],
-  correct: "Decrease in asset value"
-},
-
-/* 65 */
-{
-  question: "Financial statement analysis helps:",
-  options: ["Decision making","Ignoring finances","Reducing profit","Increasing confusion"],
-  correct: "Decision making"
-},
-
-/* 66 */
-{
-  question: "2, 4, 8, 16, ?",
-  options: ["32","20","24","30"],
-  correct: "32"
-},
-
-/* 67 */
-{
-  question: "Odd one out:",
-  options: ["Apple","Banana","Mango","Carrot"],
-  correct: "Carrot"
-},
-
-/* 68 */
-{
-  question: "If CAT = 24, DOG = ?",
-  options: ["26","25","27","28"],
-  correct: "26"
-},
-
-/* 69 */
-{
-  question: "5, 10, 20, 40, ?",
-  options: ["80","70","60","50"],
-  correct: "80"
-},
-
-/* 70 */
-{
-  question: "A is father of B. B is mother of C. A is C’s:",
-  options: ["Grandfather","Father","Uncle","Brother"],
-  correct: "Grandfather"
-},
-
-/* 71 */
-{
-  question: "Mirror image of 6:",
-  options: ["9","6","3","8"],
-  correct: "9"
-},
-
-/* 72 */
-{
-  question: "3, 6, 9, 12, ?",
-  options: ["15","16","18","20"],
-  correct: "15"
-},
-
-/* 73 */
-{
-  question: "Odd one:",
-  options: ["Cow","Dog","Cat","Car"],
-  correct: "Car"
-},
-
-/* 74 */
-{
-  question: "A : B :: C : ?",
-  options: ["D","E","F","G"],
-  correct: "D"
-},
-
-/* 75 */
-{
-  question: "1, 3, 6, 10, ?",
-  options: ["15","16","18","20"],
-  correct: "15"
-},
-
-/* 76 */
-{
-  question: "Who is known as the father of Scientific Management?",
-  options: ["Peter Drucker","Frederick Taylor","Henri Fayol","Elton Mayo"],
-  correct: "Frederick Taylor"
-},
-
-/* 77 */
-{
-  question: "Which function of management includes setting goals and deciding actions?",
-  options: ["Planning","Directing","Staffing","Controlling"],
-  correct: "Planning"
-},
-
-/* 78 */
-{
-  question: "SWOT analysis stands for:",
-  options: ["Strength, Weakness, Opportunity, Threat","Strategy, Work, Output, Target","Strength, Work, Opportunity, Time","System, Work, Organization, Target"],
-  correct: "Strength, Weakness, Opportunity, Threat"
-},
-
-/* 79 */
-{
-  question: "Span of control refers to:",
-  options: ["Number of tasks done by workers","Number of subordinates under a manager","Number of departments","Number of managers"],
-  correct: "Number of subordinates under a manager"
-},
-
-/* 80 */
-{
-  question: "Decision-making is primarily the function of:",
-  options: ["Workers","Managers","Customers","Suppliers"],
-  correct: "Managers"
-},
-
-/* 81 */
-{
-  question: "Which leadership style allows employees to participate in decisions?",
-  options: ["Autocratic","Democratic","Laissez-faire","Bureaucratic"],
-  correct: "Democratic"
-},
-
-/* 82 */
-{
-  question: "KPI stands for:",
-  options: ["Key Performance Indicator","Key Product Index","Knowledge Production Indicator","Key Planning Indicator"],
-  correct: "Key Performance Indicator"
-},
-
-/* 83 */
-{
-  question: "Cooperation means:",
-  options: ["Working alone","Working against others","Working together for a common goal","Avoiding responsibility"],
-  correct: "Working together for a common goal"
-},
-
-/* 84 */
-{
-  question: "The main aim of cooperative organizations is:",
-  options: ["Profit maximization","Service to members","Government control","Private ownership"],
-  correct: "Service to members"
-},
-
-/* 85 */
-{
-  question: "A cooperative society is owned by:",
-  options: ["Government","Shareholders","Members","Managers"],
-  correct: "Members"
-},
-
-/* 86 */
-{
-  question: "Next letter: A, C, E, G, ?",
-  options: ["I","J","H","K"],
-  correct: "I"
-},
-
-/* 87 */
-{
-  question: "Next number: 10, 20, 30, ?",
-  options: ["40","50","35","45"],
-  correct: "40"
-},
-
-/* 88 */
-{
-  question: "If all roses are flowers:",
-  options: ["Some flowers are roses","All flowers are roses","No flowers are roses","None"],
-  correct: "Some flowers are roses"
-},
-
-/* 89 */
-{
-  question: "Sequence: 1, 4, 9, 16, ?",
-  options: ["25","20","24","22"],
-  correct: "25"
-},
-
-/* 90 */
-{
-  question: "Odd one:",
-  options: ["Square","Triangle","Circle","Mango"],
-  correct: "Mango"
-},
-
-/* 91 */
-{
-  question: "If MONDAY coded as NPOEBZ, TUESDAY coded as:",
-  options: ["UVFTEBZ","UVFTDAY","TVFTDAY","VFTDAY"],
-  correct: "UVFTEBZ"
-},
-
-/* 92 */
-{
-  question: "Shape reasoning – triangle has:",
-  options: ["3 sides","4 sides","5 sides","6 sides"],
-  correct: "3 sides"
-},
-
-/* 93 */
-{
-  question: "Next pattern: 2, 6, 12, 20, ?",
-  options: ["30","25","28","32"],
-  correct: "30"
-},
-
-/* 94 */
-{
-  question: "Clock reasoning – 12 hours =",
-  options: ["360°","180°","270°","90°"],
-  correct: "360°"
-},
-
-/* 95 */
-{
-  question: "If A = 1, B = 2, then Z =",
-  options: ["26","24","25","27"],
-  correct: "26"
-},
-
-/* 96 */
-{
-  question: "Next number: 7, 14, 21, ?",
-  options: ["28","25","30","24"],
-  correct: "28"
-},
-
-/* 97 */
-{
-  question: "Odd one:",
-  options: ["Red","Blue","Green","Table"],
-  correct: "Table"
-},
-
-/* 98 */
-{
-  question: "Next letter: B, D, F, H, ?",
-  options: ["J","K","I","L"],
-  correct: "J"
-},
-
-/* 99 */
-{
-  question: "Even number:",
-  options: ["7","8","9","11"],
-  correct: "8"
-},
-
-/* 100 */
-{
-  question: "Logical statement: All men are mortal. Ram is a man. Therefore:",
-  options: ["Ram is mortal","Ram is immortal","Ram is animal","None"],
-  correct: "Ram is mortal"
+question: "The G20 summit includes:",
+options: ["20 UN members","20 richest countries","20 Asian countries","20 largest economies"],
+correct: "20 largest economies"
 }
 
 ];
-
 
   const login = document.getElementById("login");
   const exam = document.getElementById("exam");
@@ -955,5 +549,6 @@ Correct Answer: ${q.correct}
 
 </body>
 </html>
+
 
 
